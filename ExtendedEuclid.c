@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<gmp.h>
+#include<time.h>
 
 void gcd(mpz_t a, mpz_t b)
 {
@@ -52,12 +53,27 @@ void gcd(mpz_t a, mpz_t b)
 }
 
 int main(){
+
+    gmp_randstate_t state;
+    gmp_randinit_mt(state);
+    unsigned long seed;
+    seed = time(NULL);
+    gmp_randseed_ui(state, seed);
+    mpz_t limit;
+    mpz_init(limit);
+    mpz_set_ui(limit, 1000);
     mpz_t a, b;
     mpz_init(a);
     mpz_init(b);
+    mpz_urandomm(a, state, limit);
+    mpz_urandomm(b, state, limit);
+    gmp_printf("a = %Zd \nb =  %Zd\n", a, b);
+    
+    /*mpz_init(a);
+    mpz_init(b);
     gmp_printf("Enter a and b\n");
     gmp_scanf("%Zd", a);
-    gmp_scanf("%Zd", b);
+    gmp_scanf("%Zd", b);*/
     gcd(a, b);
     mpz_clear(a);
     mpz_clear(b);

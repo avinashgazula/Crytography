@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<gmp.h>
+#include<time.h>
 
 void moduloAdd(mpz_t a, mpz_t b, mpz_t n, mpz_t result)
 {
@@ -10,7 +11,7 @@ void moduloAdd(mpz_t a, mpz_t b, mpz_t n, mpz_t result)
 void moduloSub(mpz_t a, mpz_t b, mpz_t n, mpz_t result)
 {
     mpz_sub(result, a, b);
-    gmp_printf("res is %Zd\n", result);
+    gmp_printf("Diff is %Zd\n", result);
     mpz_mod(result, result, n);
 }
 
@@ -26,10 +27,22 @@ int main(){
     mpz_init(b);
     mpz_init(n);
     mpz_init(result);
-    gmp_printf("Enter a, b and n\n");
+
+    gmp_randstate_t state;
+    gmp_randinit_mt(state);
+    unsigned long seed;
+    seed = time(NULL);
+    gmp_randseed_ui(state, seed);
+    int bitcount = 10;
+    mpz_urandomb(a, state, bitcount);
+    mpz_urandomb(b, state, bitcount);
+    mpz_urandomb(n, state, bitcount-1);
+    gmp_printf("a = %Zd \nb =  %Zd\nn = %Zd\n", a, b, n);
+
+    /*gmp_printf("Enter a, b and n\n");
     gmp_scanf("%Zd", a);
     gmp_scanf("%Zd", b);
-    gmp_scanf("%Zd", n);
+    gmp_scanf("%Zd", n);*/
     moduloAdd(a, b, n, result);
     gmp_printf("Modulo Sum is %Zd\n", result);
     moduloSub(a, b, n, result);
