@@ -5,6 +5,7 @@
 using namespace std;
 mpz_t n, phi, e, d;
 bool coprime = false;
+mpz_t atemp[100];
 
 
 void gcd(mpz_t a, mpz_t b)
@@ -61,6 +62,9 @@ void gcd(mpz_t a, mpz_t b)
 
 string encrypt(string plaintext){
     int len = plaintext.length();
+    
+    for(int i=0; i<len; i++)
+    mpz_init(atemp[i]);
     string res = "";
     for(int i=0; i<len; i++){
         int temp = plaintext[i];
@@ -69,8 +73,7 @@ string encrypt(string plaintext){
         mpz_init_set_ui(mtemp, temp);
         mpz_powm(mtemp, mtemp, e, n);
         gmp_printf("%Zd ", mtemp);
-        temp = mpz_get_ui(mtemp);
-        cout<<" "<<temp<<" ";
+        mpz_set(atemp[i], mtemp);
         char ch = temp;
         res.push_back(ch);
     }
@@ -81,12 +84,13 @@ string decrypt(string cipher){
     int len = cipher.length();
     string res = "";
     for(int i=0; i<len; i++){
-        int temp = cipher[i];
+        //int temp = cipher[i];
         mpz_t mtemp;
-        mpz_init_set_ui(mtemp, temp);
+        mpz_init_set(mtemp, atemp[i]);
+        //mpz_init_set_ui(mtemp, temp);
         mpz_powm(mtemp, mtemp, d, n);
         gmp_printf("%Zd ", mtemp);
-        temp = mpz_get_ui(mtemp);
+        int temp = mpz_get_ui(mtemp);
         char ch = temp;
         res.push_back(ch);
     }
@@ -153,7 +157,7 @@ int main(){
     //cout<<"Enter input :";
     cin>>input;
     int len = input.length();
-    cout<<"len "<<len;
+    cout<<"input len "<<len<<endl;
     string cipher = encrypt(input);
     printf("\n");
     cout<<"clen "<<cipher.length();
@@ -167,7 +171,7 @@ int main(){
     cout<<endl;
     input = decrypt(cipher);
     printf("\n");
-    //cout<<"Decrypted data : "<<input<<endl;
+    cout<<"Decrypted data : "<<input<<endl;
 
     mpz_clear(a);
     mpz_clear(b);

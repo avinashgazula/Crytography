@@ -50,7 +50,9 @@ int modInverse(int a, int m)
 
 
 string encrypt(string plaintext){
+  
     int len = plaintext.length();
+    
     string res = "";
     for(int i=0; i<len; i++){
         int temp = plaintext[i];
