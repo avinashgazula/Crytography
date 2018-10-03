@@ -66,9 +66,10 @@ string encrypt(string plaintext){
     for(int i=0; i<len; i++)
     mpz_init(atemp[i]);
     string res = "";
+    cout<<"Encrypted data is ";
     for(int i=0; i<len; i++){
         int temp = plaintext[i];
-        cout<<"t"<<temp<<" ";
+        //cout<<"t"<<temp<<" ";
         mpz_t mtemp;
         mpz_init_set_ui(mtemp, temp);
         mpz_powm(mtemp, mtemp, e, n);
@@ -77,6 +78,7 @@ string encrypt(string plaintext){
         char ch = temp;
         res.push_back(ch);
     }
+    cout<<endl;
     return res;
 }
 
@@ -89,7 +91,7 @@ string decrypt(string cipher){
         mpz_init_set(mtemp, atemp[i]);
         //mpz_init_set_ui(mtemp, temp);
         mpz_powm(mtemp, mtemp, d, n);
-        gmp_printf("%Zd ", mtemp);
+        //gmp_printf("%Zd ", mtemp);
         int temp = mpz_get_ui(mtemp);
         char ch = temp;
         res.push_back(ch);
@@ -154,13 +156,13 @@ int main(){
     gmp_printf("e %Zd d %Zd n %Zd phi %Zd\n", e, d, n, phi);
     //cout<<"e "<<e<<" d "<<d<<" n "<<n<<" phi "<<phi<<endl;
     string input;
-    //cout<<"Enter input :";
+    cout<<"Enter input :";
     cin>>input;
     int len = input.length();
-    cout<<"input len "<<len<<endl;
+    //cout<<"input len "<<len<<endl;
     string cipher = encrypt(input);
     printf("\n");
-    cout<<"clen "<<cipher.length();
+    //cout<<"clen "<<cipher.length();
     for(int i=0; i<cipher.length(); i++){
         int x = cipher[i];
         cout<<x<<" ";
